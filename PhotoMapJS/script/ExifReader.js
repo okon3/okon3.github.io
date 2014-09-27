@@ -229,7 +229,7 @@
         tagValue = this._splitNullSeparatedAsciiString(tagValue);
       }
       if (this._tagNames[ifdType][tagCode] != null) {
-        if ((this._tagNames[ifdType][tagCode]['name'] != null) && (this._tagNames[ifdType][tagCode]['description'] != null)) {
+        if ((this._tagNames[ifdType][tagCode]['name'] != null) && (this._tagNames[ifdType][tagCode]['description'] != null) && (this._tagNames[ifdType][tagCode]['name'] != "GPSProcessingMethod")) {
           tagName = this._tagNames[ifdType][tagCode]['name'];
           tagDescription = this._tagNames[ifdType][tagCode]['description'](tagValue);
         } else {
