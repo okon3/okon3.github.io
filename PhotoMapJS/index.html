@@ -1,21 +1,37 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <script type="text/javascript" src="script/jquery.js"></script>
-    <script type="text/javascript" src="script/ExifReader.js"></script>
-    <script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
-    <script src='script/leaflet.markercluster.js'></script>
-    <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" />
-    <link rel="stylesheet" href="style/style.css" />
-    <link href='style/MarkerCluster.css' rel='stylesheet' />
-    <link href='style/MarkerCluster.Default.css' rel='stylesheet' />
-  </head>
-  <body>
-  	<div id="map"></div>
-    <div id="form">
-      <input type="file" id="directoryinput" webkitdirectory>
-
-    </div>
-  	<script type="text/javascript" src="script/script.js"></script>
-  </body>
+	<head>
+		<script type="text/javascript" src="script/jquery.js"></script>
+		<script type="text/javascript" src="script/ExifReader.js"></script>
+		<script type="text/javascript" src="script/jquery.sidr.min.js"></script>
+		<script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
+		<script src='script/leaflet.markercluster.js'></script>
+		<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" />
+		<link rel="stylesheet" href="style/style.css" />
+		<link href='style/MarkerCluster.css' rel='stylesheet' />
+		<link href='style/MarkerCluster.Default.css' rel='stylesheet' />
+		<link href='style/jquery.sidr.dark.css' rel='stylesheet' />
+	</head>
+		<body>
+		<div id="map"></div>
+		<div id="panel" class="panel">
+			<h2>Info & options:</h2>
+			<p>With PhotoMapJS you can finally see on a map all your photos!</p>
+			<h2>Info</h2>
+			<p>PhotoMapJs uses Javascript to read the EXIF tags in your photos and place them on the map.</p>
+			<p>It scans the directory recursively so you just have to pick your main photo folder.</p>
+			<p>Since it uses Javascript it's all CLIENT SIDE, so <b>no uploads</b>, and it's lightning fast! (No one will be able to see your photos form this site)</p>
+			<p>Only supports <b>Jpeg</b>. (EXIF is only available in Jpeg and Tiff filetypes).</p>
+			<p>If it doesn't work with your photos it's probably because they don't have the GPS informations. Remember, unless you have a dedicated hardware, photos from your reflex/compact camera will not work.</p>
+			<p>However you can set up your smartphone (if it has a GPS) to geotag the photos. Search for this option in your camera app settings.</p>
+			<h2>Options</h2>
+			<p>Eventually some options for the map.</p>
+		</div>
+		<div id="form">
+			<button id="dbutton">Select a Directory</button>
+			<input type="file" id="directoryinput" multiple webkitdirectory>
+		</div>
+		<a id="arrow" class="slider-arrow show" href="javascript:void(0)"><img src="img/arrow-open.png" width="30px" height="60px"/></a>
+		<script type="text/javascript" src="script/script.js"></script>
+	</body>
 </html>

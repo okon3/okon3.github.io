@@ -1,7 +1,7 @@
 #map{
     position:absolute;
     top:0;
-    bottom:25px;
+    bottom:0;
     left:0;
     right:0;
     margin: 0;
@@ -10,11 +10,53 @@
 
 #form{
 	position:absolute;
-	bottom: 0;
-
+	top: 10px;
+    left: 50px;
 }
-/*
+
 #directoryinput{
     visibility: collapse;
     width: 0px;
-}*/
+}
+
+body {
+    background: #fff;
+}
+
+#dbutton{
+    height: 54px;
+    border-radius: 5px;
+    border: 1px solid #bbb;
+    background: #fafafa;
+    -webkit-box-shadow: 1px 1px 3px 0px rgba(0,0,0,0.75);
+    -moz-box-shadow: 1px 1px 3px 0px rgba(0,0,0,0.75);
+    box-shadow: 1px 1px 3px 0px rgba(0,0,0,0.50);
+}
+
+.panel {
+    top:0px;
+    bottom: 0px;
+    width:270px;
+    margin-right: 35px;
+    float:right;
+    position:fixed;
+    background: #d6d6d6;
+    right:-325px;
+    padding-left: 10px;
+    font:400 13px Arial, Helvetica, sans-serif;
+
+    -webkit-box-shadow: inset 12px 0px 7px -10px rgba(79,79,79,1);
+    -moz-box-shadow: inset 12px 0px 7px -10px rgba(79,79,79,1);
+    box-shadow: inset 12px 0px 7px -10px rgba(79,79,79,1);
+
+}
+
+.slider-arrow {
+    float:right;
+    position:relative;
+    right:0px;
+}
+
+h2{
+    text-align: center;
+}

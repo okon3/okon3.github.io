@@ -3,9 +3,33 @@ var directory = document.getElementById("directoryinput");
 var windowHeight = window.innerHeight;
 var windowWidth = window.innerWidth;
 
+$('#arrow').click(function(){
+  if($(this).hasClass('show')){
+    $( "#arrow, #panel" ).animate({
+    right: "+=290"
+    }, 700, function() {
+    // Animation complete.
+    });
+    $(this).html('<img src="img/arrow-close.png" width="30px" height="60px"/>').removeClass('show').addClass('hide');
+    }
+  else {    
+    $( "#arrow, #panel" ).animate({
+      right: "-=290"
+    }, 700, function() {
+    // Animation complete.
+    });
+    $(this).html('<img src="img/arrow-open.png" width="30px" height="60px"/>').removeClass('hide').addClass('show');    
+  }
+});
+
+
+dbutton.addEventListener("click", function() {
+                document.getElementById('directoryinput').click()
+            }, false);
+
 var markers = new L.MarkerClusterGroup();
 
-var map = L.map('map').setView([49.5626948, 23.3427851], 5);
+var map = L.map('map').setView([0.5626948, 23.3427851], 2);
 L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
     attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
 }).addTo(map);
