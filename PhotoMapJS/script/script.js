@@ -1,4 +1,3 @@
-var fotos;
 var directory = document.getElementById("directoryinput");
 var windowHeight = window.innerHeight;
 var windowWidth = window.innerWidth;
@@ -24,8 +23,8 @@ $('#arrow').click(function(){
 
 
 dbutton.addEventListener("click", function() {
-                document.getElementById('directoryinput').click()
-            }, false);
+  document.getElementById('directoryinput').click()
+}, false);
 
 var markers = new L.MarkerClusterGroup();
 
@@ -37,18 +36,23 @@ L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
 map.addLayer(markers);
 
 var handleFile = function (event) {
-  var files;
-  files = event.target.files;
+  var reader = new FileReader();
+  var i = 0;
 
-  for(var i = 0,f;f= files[i];i++){
+  function process_one(){
+    var single_file;
+    do{
+     single_file = event.target.files[i];
+     i++
+    }while(typeof(single_file) != 'undefined' && !single_file.type.match('image.*'));
 
-     if (!f.type.match('image.*')) {
-      continue;
+    if(single_file === undefined){
+      return;
     }
-    var reader = new FileReader();
 
-    reader.onload = (function (theFile) {
-      return function(event){
+    (function dummy_function(file){
+      reader.onload = function(event){
+
         try {
 
           exif = new ExifReader();
@@ -57,30 +61,36 @@ var handleFile = function (event) {
           exif.deleteTag('MakerNote');
 
           tags = exif.getAllTags();
+          if(typeof tags['GPSLatitude'] != 'undefined' && typeof tags['GPSLongitude'] != 'undefined'){
 
-          var arrayBufferView = new Uint8Array( event.target.result );
-          var blob = new Blob( [ arrayBufferView ], { type: "image/jpeg" } );
-          var urlCreator = window.URL || window.webkitURL;
-          var imageUrl = urlCreator.createObjectURL( blob );
-          
-          var newsize = calculateAspectRatioFit(tags['PixelXDimension'].description,tags['PixelYDimension'].description,1200,500);
+            var arrayBufferView = new Uint8Array( event.target.result );
+            var blob = new Blob( [ arrayBufferView ], { type: "image/jpeg" } );
+            var urlCreator = window.URL || window.webkitURL;
+            var imageUrl = urlCreator.createObjectURL( blob );
+            var x = typeof(tags['PixelXDimension']) != 'undefined' ? tags['PixelXDimension'].value : tags['ImageWidth'].value;
+            var y = typeof(tags['PixelYDimension']) != 'undefined' ? tags['PixelYDimension'].value : tags['ImageLength'].value;
+            
+            var newsize = calculateAspectRatioFit(x,y,1200,500);
 
-          var popup = L.popup({maxWidth:windowWidth*0.75}).setContent('<img src="'+imageUrl+'" height="'+Math.floor(newsize['height'])+'" width="'+Math.floor(newsize['width'])+'"/>');
+            var popup = L.popup({maxWidth:windowWidth*0.75}).setContent('<img src="'+imageUrl+'" height="'+Math.floor(newsize['height'])+'" width="'+Math.floor(newsize['width'])+'"/>');
 
-          var marker = L.marker([tags['GPSLatitude'].description,tags['GPSLongitude'].description]).bindPopup(popup);
+            var marker = L.marker([tags['GPSLatitude'].description,tags['GPSLongitude'].description]).bindPopup(popup);
 
-          markers.addLayer(marker);
+            markers.addLayer(marker);
+          }
 
         } catch (error) {
           //alert(error);
-          console.log(theFile.name);
           console.log(error);
         }
+
+        process_one();
       };
 
-    })(f);
-  reader.readAsArrayBuffer(f); 
+    reader.readAsArrayBuffer(file);
+    })(single_file);
   }
+  process_one();
 };
 
 directory.addEventListener("change", handleFile, false);  
