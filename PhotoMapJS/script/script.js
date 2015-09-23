@@ -1,7 +1,9 @@
+var allPhotos = [];
 var directory = document.getElementById("directoryinput");
 var windowHeight = window.innerHeight;
 var windowWidth = window.innerWidth;
 
+//Sidebar Handling
 $('#arrow').click(function(){
   if($(this).hasClass('show')){
     $( "#arrow, #panel" ).animate({
@@ -37,13 +39,13 @@ map.addLayer(markers);
 
 var handleFile = function (event) {
   var reader = new FileReader();
-  var i = 0;
+  var iFiles = 0;
+  var single_file;
 
   function process_one(){
-    var single_file;
     do{
-     single_file = event.target.files[i];
-     i++
+     single_file = event.target.files[iFiles];
+     iFiles++
     }while(typeof(single_file) != 'undefined' && !single_file.type.match('image.*'));
 
     if(single_file === undefined){
@@ -52,9 +54,7 @@ var handleFile = function (event) {
 
     (function dummy_function(file){
       reader.onload = function(event){
-
         try {
-
           exif = new ExifReader();
 
           exif.load(event.target.result);
@@ -62,20 +62,21 @@ var handleFile = function (event) {
 
           tags = exif.getAllTags();
           if(typeof tags['GPSLatitude'] != 'undefined' && typeof tags['GPSLongitude'] != 'undefined'){
-
-            var arrayBufferView = new Uint8Array( event.target.result );
-            var blob = new Blob( [ arrayBufferView ], { type: "image/jpeg" } );
-            var urlCreator = window.URL || window.webkitURL;
-            var imageUrl = urlCreator.createObjectURL( blob );
             var x = typeof(tags['PixelXDimension']) != 'undefined' ? tags['PixelXDimension'].value : tags['ImageWidth'].value;
             var y = typeof(tags['PixelYDimension']) != 'undefined' ? tags['PixelYDimension'].value : tags['ImageLength'].value;
-            
-            var newsize = calculateAspectRatioFit(x,y,1200,500);
+            var newsize = calculateAspectRatioFit(x,y,windowWidth*0.79,500);
 
-            var popup = L.popup({maxWidth:windowWidth*0.75}).setContent('<img src="'+imageUrl+'" height="'+Math.floor(newsize['height'])+'" width="'+Math.floor(newsize['width'])+'"/>');
+            allPhotos.push({
+              photo: single_file,
+              realWidth : x,
+              realHeight : y,
+              height: Math.floor(newsize.height) ,
+              width: Math.floor(newsize.width),
+              latlng : [tags['GPSLatitude'].description,tags['GPSLongitude'].description]
+            });
 
-            var marker = L.marker([tags['GPSLatitude'].description,tags['GPSLongitude'].description]).bindPopup(popup);
-
+            var marker = L.marker([tags['GPSLatitude'].description,tags['GPSLongitude'].description],{alt : allPhotos.length-1});
+            marker.on('click', onMarkerClick);
             markers.addLayer(marker);
           }
 
@@ -101,4 +102,25 @@ function calculateAspectRatioFit(srcWidth, srcHeight, maxWidth, maxHeight) {
     ratio = Math.min(ratio[0], ratio[1]);
 
     return { width:srcWidth*ratio, height:srcHeight*ratio };
+}
+
+function onMarkerClick(e){
+  var j = e.target.options.alt;
+
+  var reader = new FileReader();
+
+  reader.onload = function(event){
+
+    var arrayBufferView = new Uint8Array( event.target.result );
+    var blob = new Blob( [ arrayBufferView ], { type: "image/jpeg" } );
+    var urlCreator = window.URL || window.webkitURL;
+    var imageUrl = urlCreator.createObjectURL( blob );
+    var popup = L.popup({maxWidth:windowWidth*0.80})
+    .setLatLng(allPhotos[j].latlng)
+    .setContent('<img src="'+imageUrl+'" height="'+allPhotos[j].height+'" width="'+allPhotos[j].width+'"/>')
+    .openOn(map);
+  };
+
+  reader.readAsArrayBuffer(allPhotos[j].photo);
+
 }
