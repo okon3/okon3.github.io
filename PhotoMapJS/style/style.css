@@ -23,7 +23,7 @@ body {
     background: #fff;
 }
 
-#dbutton{
+button{
     height: 54px;
     border-radius: 5px;
     border: 1px solid #bbb;
