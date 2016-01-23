@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+		
+		<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet/v1.0.0-beta.2/leaflet.css" />
+		<link href='style/MarkerCluster.css' rel='stylesheet' />
+		<link href='style/MarkerCluster.Default.css' rel='stylesheet' />
+		<link rel="stylesheet" href="style/style.css" />
+
+		<script type="text/javascript" src="script/jquery.js"></script>
+
+		<script src="http://cdn.leafletjs.com/leaflet/v1.0.0-beta.2/leaflet.js"></script>
+
+		<script src='script/leaflet.markercluster.js'></script>
+
+		<script type="text/javascript" src="script/script.js"></script>
+
+	</head>
+	<body>
+	 <div id="map"></div>
+	<form action="https://hellobuswsweb.tper.it/web-services/hello-bus.asmx/QueryHellobus4ivr" method="POST">
+		<input type="text" name="fermata"/>
+		<input type="text" name="linea"/>
+		<input type="text" name="oraHHMM"/>
+		<input type="submit" value="invia"/>
+	</form>
+	</body>
+</html>
