@@ -26,6 +26,11 @@ var reerMap = {
     map : {},
     baseLayer : {},
     layers : [],
+    style : {
+        color: "#ff0000",
+        weight: 2,
+        opacity: 1
+    },
     init: function(){
 		reerMap.initEvents();
 		reerMap.initMap();
@@ -64,13 +69,13 @@ var reerMap = {
         if(typeof reerMap.layers[layer] === "undefined"){
             $("#" + layer).addClass("loading");
             reerMap.layers[layer] = {};
-            reerMap.layers[layer].layer = new L.TopoJSON();
-            reerMap.layers[layer].enabled = false;
+
             console.log("Loading layer:" + layer);
-            $.getJSON("data/"+ layer +".topo.json")
+            $.getJSON("data/"+ layer +".json")
                 .done(function(data) {
                     console.log("Loaded layer:" + layer);
-                    reerMap.layers[layer].layer.addData(topoData);
+                    reerMap.layers[layer].layer = new L.geoJson(data, {style : reerMap.style});
+                    reerMap.layers[layer].enabled = false;
                     $("#" + layer).removeClass("loading");
                     reerMap.toggleLayer(layer);
                 });
@@ -84,9 +89,11 @@ var reerMap = {
             if(reerMap.map.hasLayer(reerMap.layers[layer].layer)){
                 reerMap.map.removeLayer(reerMap.layers[layer].layer);
             }
+            reerMap.layers[layer].enabled = false;
         }else{
             $("#" + layer).addClass("enabled");
             reerMap.map.addLayer(reerMap.layers[layer].layer);
+            reerMap.layers[layer].enabled = true;
         }
         
     }
