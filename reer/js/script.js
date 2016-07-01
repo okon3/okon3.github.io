@@ -71,10 +71,10 @@ var reerMap = {
             reerMap.layers[layer] = {};
 
             console.log("Loading layer:" + layer);
-            $.getJSON("data/"+ layer +".json")
+            $.getJSON("data/"+ layer +".topo.json")
                 .done(function(data) {
                     console.log("Loaded layer:" + layer);
-                    reerMap.layers[layer].layer = new L.geoJson(data, {style : reerMap.style});
+                    reerMap.layers[layer].layer = new L.TopoJSON(data, {style : reerMap.style});
                     reerMap.layers[layer].enabled = false;
                     $("#" + layer).removeClass("loading");
                     reerMap.toggleLayer(layer);
