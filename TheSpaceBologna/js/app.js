@@ -1,9 +1,43 @@
+var weekday = new Array(7);
+weekday[0]=  "Domenica";
+weekday[1] = "Lunedì";
+weekday[2] = "Martedì";
+weekday[3] = "Mercoledì";
+weekday[4] = "Giovedì";
+weekday[5] = "Venerdì";
+weekday[6] = "Sabato";
+
 (function($){
     $(function(){
         $('.button-collapse').sideNav();
+        setDays();
         loadFilms();
     });
 })(jQuery);
+
+function setDays(){
+    var today = new Date();
+    for(var i = 0; i < app.config.days; i++){
+        var curDay = addDays(today,i);
+        var giorno = $('<a/>');
+        giorno.text(weekday[curDay.getDay()]);
+        giorno.attr('href', '#container-'+(i+1));
+        if(i === 0){
+            giorno.addClass("active");
+            giorno.text('Oggi');
+        }
+        if(i === 1){
+            giorno.text('Domani');
+        }
+        $('#day-'+(i+1)).html(giorno);
+    }
+}
+
+function addDays(date, days) {
+    var result = new Date(date);
+    result.setDate(result.getDate() + days);
+    return result;
+}
 
 function loadFilms(){
     //Request movies
@@ -11,6 +45,7 @@ function loadFilms(){
         url: app.config.UrlMovies,
         dataType: "json",
         success: function (response) {
+            app._programmazione = response.programmazione; //copy the real programmazione
             app.lengthProgrammazione = response.programmazione.length > app.config.days ? app.config.days : response.programmazione.length;
             var _codMovies = [];
             for(var i = 0; i < app.lengthProgrammazione; i++){
@@ -58,7 +93,14 @@ function loadFilms(){
                             film.duration = _film[0].durata;
                             film.genres = _film[0].categories;
                             film.imageURL = 'http://cdn.thespacecinema.it/portal/rest/jcr/repository/collaboration' + _film[0].path + '/illustration';
-
+                            film.times = [];
+                            for(var j = 0; j < app.config.days; j++){
+                                var tempProg = app._programmazione[j].filter(function(item, pos) {return item.codFilm === codMovie;});
+                                film.times[j] = $.map(tempProg, function (el, indexOrKey) {
+                                    return el.eventTime;
+                                });
+                            }
+                            
                             app.movies[codMovie] = film;
                         }
                     }
@@ -85,6 +127,7 @@ var app = new Vue({
         },
         codMovies : [],
         movies : {},
+        _programmazione : [],
         programmazione : [],
         loaded: false
     }
@@ -107,7 +150,7 @@ Vue.component('movie-card-desktop', {
             '				</ul>'+
             '			</div>'+
             '			<div class="card-action center-align">'+
-            
+            '				<div class="chip blue white-text" v-for="time in movie.times[day]">{{time}}</div>'+
             '			</div>'+
             '		</div>'+
             '	</div>'+
@@ -131,7 +174,7 @@ Vue.component('movie-card-mobile', {
             '				</ul>'+
             '			</div>'+
             '			<div class="card-action center-align">'+
-            '				<div class="chip blue white-text" v-for="time in movie.times">{{time}}</div>'+
+            '				<div class="chip blue white-text" v-for="time in movie.times[day]">{{time}}</div>'+
             '			</div>'+
             '		</div>'+
             '	</div>'+
