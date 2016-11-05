@@ -33,8 +33,8 @@
 				</ul>
 			</div>
 		</nav>
-		<main>
-			<div class="section center-align">
+		<main id="app">
+			<div v-if="!loaded" class="section center-align">
 				<div class="preloader-wrapper big active">
 					<div class="spinner-layer spinner-red-only">
 					<div class="circle-clipper left">
@@ -50,45 +50,30 @@
 
 			<div id="container-1">
 				<div class="row">
-					<div class="col s12 m6">
-						<div class="card horizontal hoverable ">
-							<div class="card-image">
-								<img src="http://cdn.thespacecinema.it/portal/rest/jcr/repository/collaboration/sites/shared/web%20contents/schede-film/no-3d-doctor-strange/illustration">
-							</div>
-							<div class="card-stacked">
-								<div class="card-content">
-									<span class="card-title truncate">(NO 3D) DOCTOR STRANGE</span>
-									<ul class="fa-ul">
-										<li><i class="fa-li fa fa-genderless"></i> <strong>Genere</strong> : Avventura </li>
-										<li><i class="fa-li fa fa-film"></i> <strong>Regia</strong> : Scott Derrickson</li>
-										<li><i class="fa-li fa fa-play"></i> <strong>Durata</strong> : 115</li>
-									</ul>
-									<p>
-										Stephen Strange, eccentrico neurochirurgo, perde l'uso delle mani in un incidente.  LUNGHEZZA MASSIMA
-									</p>
-								</div>
-								<div class="card-action center-align">
-									<div class="chip blue white-text">12:30</div>
-									<div class="chip blue white-text">13:30</div>
-									<div class="chip blue white-text">14:30</div>
-									<div class="chip blue white-text">15:30</div>
-								</div>
-							</div>
-						</div>
-					</div>
+					<movie-card-desktop v-for="movie in programmazione[0]" v-bind:movie="movies[movie]" v-bind:day="0"></movie-card-desktop>
+					<!--<movie-card-mobile v-for="movie in programmazione[0]" v-bind:movie="movies[movie]" v-bind:day="0"></movie-card-mobile>-->
 				</div>
 			</div>
 
 			<div id="container-2">
-				DUE
+				<div class="row">
+					<movie-card-desktop v-for="movie in programmazione[1]" v-bind:movie="movies[movie]" v-bind:day="1"></movie-card-desktop>
+					<!--<movie-card-mobile v-for="movie in programmazione[0]" v-bind:movie="movies[movie]" v-bind:day="1"></movie-card-mobile>-->
+				</div>
 			</div>
 
 			<div id="container-3">
-				TRE
+				<div class="row">
+					<movie-card-desktop v-for="movie in programmazione[2]" v-bind:movie="movies[movie]" v-bind:day="2"></movie-card-desktop>
+					<!--<movie-card-mobile v-for="movie in programmazione[0]" v-bind:movie="movies[movie]" v-bind:day="2"></movie-card-mobile>-->
+				</div>
 			</div>
 
 			<div id="container-4">
-				QUATTRO!
+				<div class="row">
+					<movie-card-desktop v-for="movie in programmazione[3]" v-bind:movie="movies[movie]" v-bind:day="3"></movie-card-desktop>
+					<!--<movie-card-mobile v-for="movie in programmazione[0]" v-bind:movie="movies[movie]" v-bind:day="3"></movie-card-mobile>-->
+				</div>
 			</div>
 		</main>
 		
