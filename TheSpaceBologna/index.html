@@ -10,11 +10,12 @@
 		<!--App style -->
 		<link type="text/css" rel="stylesheet" href="css/style.css" />
 
-		<meta charset="utf-8" /> 
+		<meta charset="utf-8" />
+		<meta name="theme-color" content="#f57c00">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>		
 	</head>
 	<body>
-		<nav class="nav-extended">
+		<nav class="nav-extended orange darken-2">
 			<div class="nav-wrapper">
 				<a href="#" class="brand-logo center">The Space Cinema</a>
 				<a href="#" data-activates="mobile-demo" class="button-collapse"><i class="material-icons">menu</i></a>
@@ -50,38 +51,47 @@
 
 			<div id="container-1">
 				<div class="row">
-					<movie-card-desktop v-for="movie in programmazione[0]" v-bind:movie="movies[movie]" v-bind:day="0"></movie-card-desktop>
-					<movie-card-mobile v-for="movie in programmazione[0]" v-bind:movie="movies[movie]" v-bind:day="0"></movie-card-mobile>
+					<movie-card v-for="movie in programmazione[0]" v-bind:movie="movies[movie]" v-bind:day="0" v-bind:is-desktop="true"></movie-card>
+					<movie-card v-for="movie in programmazione[0]" v-bind:movie="movies[movie]" v-bind:day="0" v-bind:is-desktop="false"></movie-card>
 				</div>
 			</div>
 
 			<div id="container-2">
 				<div class="row">
-					<movie-card-desktop v-for="movie in programmazione[1]" v-bind:movie="movies[movie]" v-bind:day="1"></movie-card-desktop>
-					<movie-card-mobile v-for="movie in programmazione[1]" v-bind:movie="movies[movie]" v-bind:day="1"></movie-card-mobile>
+					<movie-card v-for="movie in programmazione[1]" v-bind:movie="movies[movie]" v-bind:day="1" v-bind:is-desktop="true"></movie-card>
+					<movie-card v-for="movie in programmazione[1]" v-bind:movie="movies[movie]" v-bind:day="1" v-bind:is-desktop="false"></movie-card>
 				</div>
 			</div>
 
 			<div id="container-3">
 				<div class="row">
-					<movie-card-desktop v-for="movie in programmazione[2]" v-bind:movie="movies[movie]" v-bind:day="2"></movie-card-desktop>
-					<movie-card-mobile v-for="movie in programmazione[2]" v-bind:movie="movies[movie]" v-bind:day="2"></movie-card-mobile>
+					<movie-card v-for="movie in programmazione[2]" v-bind:movie="movies[movie]" v-bind:day="2" v-bind:is-desktop="true"></movie-card>
+					<movie-card v-for="movie in programmazione[2]" v-bind:movie="movies[movie]" v-bind:day="2" v-bind:is-desktop="false"></movie-card>
 				</div>
 			</div>
 
 			<div id="container-4">
 				<div class="row">
-					<movie-card-desktop v-for="movie in programmazione[3]" v-bind:movie="movies[movie]" v-bind:day="3"></movie-card-desktop>
-					<movie-card-mobile v-for="movie in programmazione[3]" v-bind:movie="movies[movie]" v-bind:day="3"></movie-card-mobile>
+					<movie-card v-for="movie in programmazione[3]" v-bind:movie="movies[movie]" v-bind:day="3" v-bind:is-desktop="true"></movie-card>
+					<movie-card v-for="movie in programmazione[3]" v-bind:movie="movies[movie]" v-bind:day="3" v-bind:is-desktop="false"></movie-card>
 				</div>
 			</div>
-		</main>
-		
 
-		<footer class="page-footer">
+			<div class="fixed-action-btn">
+				<a class="btn-floating btn-large orange darken-2">
+					<i class="material-icons">menu</i>
+				</a>
+				<ul>
+					<li><a class="btn-floating green waves-effect waves-light" v-on:click="changeSort"><i class="material-icons">sort_by_alpha</i></a></li>
+					<li><a class="btn-floating blue waves-effect waves-light" ><i class="material-icons">view_list</i></a></li>
+				</ul>
+			</div>
+		</main>
+
+		<footer class="page-footer orange darken-2">
 			<div class="footer-copyright">
 				<div class="container">
-					Made by <a class="amber-text text-lighten-3" href="mailto:luca.regazzi@gmail.com">Luca Regazzi</a>
+					Made by <a class="amber-text text-lighten-4" href="mailto:luca.regazzi@gmail.com">Luca Regazzi</a>
 				</div>
 			</div>
 		</footer>
