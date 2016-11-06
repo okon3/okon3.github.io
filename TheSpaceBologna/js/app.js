@@ -158,7 +158,7 @@ Vue.component('movie-card-desktop', {
 })
 
 Vue.component('movie-card-mobile', {
-  props: ['movie'],
+  props: ['movie', 'day'],
   template: '<div class="col s12 m6 hide-on-large-only">'+
             '	<div class="card hoverable ">'+
             '		<div class="card-image">'+
