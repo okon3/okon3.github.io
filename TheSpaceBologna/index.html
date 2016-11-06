@@ -82,8 +82,8 @@
 					<i class="material-icons">menu</i>
 				</a>
 				<ul>
-					<li><a class="btn-floating green waves-effect waves-light" v-on:click="changeSort"><i class="material-icons">sort_by_alpha</i></a></li>
-					<li><a class="btn-floating blue waves-effect waves-light" ><i class="material-icons">view_list</i></a></li>
+					<li><a class="btn-floating green waves-effect waves-light" @click="changeSort"><i class="fa" v-bind:class="sortIcon" aria-hidden="true"></i></a></li>
+					<li><a class="btn-floating blue waves-effect waves-light" @click="changeListMode"><i class="material-icons">view_list</i></a></li>
 				</ul>
 			</div>
 		</main>
