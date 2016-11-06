@@ -128,6 +128,7 @@ var app = new Vue({
             UrlMovies : 'http://cdn.thespacecinema.it/rest/programmazione/3/get',
             UrlMoviesInfo : 'http://cdn.thespacecinema.it/rest/film/films-by-universalCodes',
             days : 4, //Number of days (today, tommorrow, after tomorrow, after after tomorrow)
+            isFABActive : false,
             listMode : false,
             sortIndex : 0,
             sorts : [
@@ -164,11 +165,17 @@ var app = new Vue({
     methods : {
         changeListMode : function(){
             this.config.listMode = !this.config.listMode;
+            $('.fixed-action-btn').closeFAB();
+            this.config.isFABActive = false;
         },
         changeSort : function(event){
             this.config.sortIndex = (this.config.sortIndex + 1 ) % (this.config.sorts.length);
             this.sortMovies();
             $('.fixed-action-btn').closeFAB();
+            this.config.isFABActive = false;
+        },
+        handleFAB : function(){
+            this.config.isFABActive = !this.config.isFABActive;
         },
         sortMovies : function(){
             for(var i = 0 ; i < this.programmazione.length; i++){
@@ -177,12 +184,18 @@ var app = new Vue({
         }
     },
     computed : {
+        FABIcon : function(){
+            return this.config.isFABActive ? 'close' : 'menu';
+        },
         sortIcon : function(){
             return this.config.sorts[(this.config.sortIndex + 1 ) % (this.config.sorts.length)].icon;
         },
         sortTitle : function(){
             return this.config.sorts[(this.config.sortIndex + 1 ) % (this.config.sorts.length)].title;
-        }
+        },
+        viewIcon : function(){
+            return this.config.listMode ? 'view_module' : 'view_list';
+        },
     }
 })
 
