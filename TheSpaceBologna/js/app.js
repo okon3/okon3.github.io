@@ -7,6 +7,7 @@ weekday[4] = "Giovedì";
 weekday[5] = "Venerdì";
 weekday[6] = "Sabato";
 
+//Startup
 (function($){
     $(function(){
         $('.button-collapse').sideNav();
@@ -15,21 +16,22 @@ weekday[6] = "Sabato";
     });
 })(jQuery);
 
+//Set days accordingly
 function setDays(){
     var today = new Date();
-    for(var i = 0; i < app.config.days; i++){
-        var curDay = addDays(today,i);
+    for(var i = 1; i <= app.config.days; i++){
+        var curDay = addDays(today,i-1);
         var giorno = $('<a/>');
         giorno.text(weekday[curDay.getDay()]);
-        giorno.attr('href', '#container-'+(i+1));
-        if(i === 0){
+        giorno.attr('href', '#container-' + i);
+        if(i === 1){
             giorno.addClass("active");
             giorno.text('Oggi');
         }
-        if(i === 1){
+        if(i === 2){
             giorno.text('Domani');
         }
-        $('#day-'+(i+1)).html(giorno);
+        $('#day-' + i).html(giorno);
     }
 }
 
@@ -109,6 +111,9 @@ function loadFilms(){
                     app.sortMovies();
 
                     app.loaded = true;
+
+                    //Force reload tabs
+                    $('ul.tabs').tabs();
                 },
                 error: function(response){
                     console.log(response);
@@ -136,8 +141,8 @@ var app = new Vue({
                     title: 'Ordine alfabetico',
                     icon : 'fa-sort-alpha-asc',
                     function : function(codMovie1, codMovie2){ //Sort by title asc
-                        var title1 = app.movies[codMovie1].title;
-                        var title2 = app.movies[codMovie2].title;
+                        var title1 = app.movies[codMovie1].title.replace("(3D) ","").replace("(NO 3D) ","");
+                        var title2 = app.movies[codMovie2].title.replace("(3D) ","").replace("(NO 3D) ","");
                         if(title1 < title2) return -1
                         if(title1 > title2) return 1
                         return 0;
@@ -147,8 +152,8 @@ var app = new Vue({
                     title: 'Ordine alfabetico inverso',
                     icon : 'fa-sort-alpha-desc',
                     function : function(codMovie1, codMovie2){ //Sort by title desc
-                        var title1 = app.movies[codMovie1].title;
-                        var title2 = app.movies[codMovie2].title;
+                        var title1 = app.movies[codMovie1].title.replace("(3D) ","").replace("(NO 3D) ","");
+                        var title2 = app.movies[codMovie2].title.replace("(3D) ","").replace("(NO 3D) ","");
                         if(title1 < title2) return 1
                         if(title1 > title2) return -1
                         return 0;
@@ -173,6 +178,9 @@ var app = new Vue({
             this.sortMovies();
             $('.fixed-action-btn').closeFAB();
             this.config.isFABActive = false;
+        },
+        generateContainerID : function(n){
+            return "container-" + n;
         },
         handleFAB : function(){
             this.config.isFABActive = !this.config.isFABActive;
@@ -201,7 +209,7 @@ var app = new Vue({
 
 Vue.component('movie-card', {
   props: ['movie', 'day', 'isDesktop'],
-  template: '<div class="col" v-bind:class="{\'hide-on-med-and-down\':isDesktop, l6:isDesktop,\'hide-on-large-only\':!isDesktop, s12:!isDesktop, m6:!isDesktop}">'+ 
+  template: '<div class="col s12 m6 l6" v-bind:class="{\'hide-on-med-and-down\':isDesktop, l6:isDesktop,\'hide-on-large-only\':!isDesktop, s12:!isDesktop, m6:!isDesktop}">'+ 
             '	<div class="card hoverable" v-bind:class="{horizontal:isDesktop}">'+
             '		<div class="card-image" v-if="!app.config.listMode">'+
             '			<img v-bind:src="movie.imageURL">'+
