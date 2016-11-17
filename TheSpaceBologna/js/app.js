@@ -187,7 +187,7 @@ var app = new Vue({
             $('.fixed-action-btn').closeFAB();
             this.config.isFABActive = false;
         },
-        checkOccupancy : function(time){
+        checkOccupancy : function(time,event){
             var params = {};
             params.service = 115;
             params.iddata = time.iddata;
@@ -197,17 +197,27 @@ var app = new Vue({
             params.idfilm = time.idfilm;
             params.tipoop = 'ACQUISTO';
             params.modpag = 0;
-            $.ajax({
-                url: app.config.UrlOccupancyInfo,
+            var source = event.target || event.srcElement;
+            $(source).append(' <i class="fa fa-spinner fa-pulse fa-fw"></i>');
+            $.get({
+                url: 'https://crossorigin.me/' + app.config.UrlOccupancyInfo,
                 dataType: "html",
                 data : params,
                 success: function (response) {
                     var free = $(response).find('.Mappa_Poltrona_Libera').length;
                     var full = $(response).find('.Mappa_Poltrona_Occupata').length;
                     var total = free + full;
-                    var ratio = free / total * 100;
+                    var ratio = Math.round(full / total * 100 * 100 ) / 100;
                     var ratioStr = ratio + '%'; 
-                    alert('free: ' + free + ' full: ' + full + ' total: ' + total + ' ratio: ' + ratio);
+                    console.log('free: ' + free + ' full: ' + full + ' total: ' + total + ' ratio: ' + ratio);
+
+                    var colorClass = 'chip light-green darken-2 white-text';
+                    if (ratio > 50) colorClass = 'chip yellow darken-3 white-text';
+                    if (ratio > 75) colorClass = 'chip red darken-3 white-text';
+                    if (ratio > 90) colorClass = 'chip grey darken-4 white-text';;
+
+                    $(source).removeClass().addClass(colorClass);
+                    $(source).find('i').remove();
                 },
                 error: function(response){
                     console.log(response);
@@ -260,14 +270,14 @@ Vue.component('movie-card', {
             '               <p v-if="app.config.listMode"><strong>Genere</strong> : {{movie.genres.join(\', \')}} | <strong>Regia</strong> : {{movie.director}} | <strong>Durata</strong> : {{movie.duration}}</p>'+
             '			</div>'+
             '			<div class="card-action center-align">'+
-            '				<div class="chip blue white-text" v-for="time in movie.times[day]" @click="checkOccupancy(time)">{{time.time}}</div>'+
+            '				<div class="chip blue white-text" v-for="time in movie.times[day]" @click="checkOccupancy(time,$event)">{{time.time}}</div>'+
             '			</div>'+
             '		</div>'+
             '	</div>'+
             '</div>',
     methods : {
-        checkOccupancy : function(time){
-            app.checkOccupancy(time);
+        checkOccupancy : function(time,event){
+            app.checkOccupancy(time,event);
         }
     }
 })
