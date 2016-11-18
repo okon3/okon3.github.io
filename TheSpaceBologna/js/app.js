@@ -90,7 +90,7 @@ function loadFilms(){
 
                         if(_film.length > 0){
                             var film = {};
-                            film.title = _film[0].seo.seoTitle;
+                            film.title = _film[0].seo.seoTitle.replace('&amp;','&');
                             film.director = _film[0].regia;
                             film.duration = app.minToHours(_film[0].durata);
                             film.genres = _film[0].categories;
