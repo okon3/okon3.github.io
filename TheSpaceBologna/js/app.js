@@ -24,7 +24,7 @@ weekday[6] = "Sabato";
                     if(fingerCount > 0)
                         $('ul.tabs').tabs('select_tab', 'container-'+(--currentDay));
                 },
-                threshold: 100
+                threshold: 75
             });
         }
 
