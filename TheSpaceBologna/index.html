@@ -18,7 +18,7 @@
 
 		<meta charset="utf-8" />
 		<meta name="theme-color" content="#f57c00">
-		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>		
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1, user-scalable = no,"/>		
 	</head>
 	<body>
 		<nav class="nav-extended orange darken-2">
@@ -55,7 +55,7 @@
 				</div>
 			</div>
 	
-			<div v-for="n in config.days" :id.prop="generateContainerID(n)">
+			<div v-for="n in config.days" :id.prop="generateContainerID(n)" class="swipe-me">
 				<div class="row" v-if="loaded">
 					<div v-if="programmazione[n-1].length === 0" class="col s12">
 						<h4 class="center-align">Nessun film in programmazione per il giorno selezionato.</h4>
@@ -88,6 +88,8 @@
 
 		<!--JQuery-->
 		<script type="text/javascript" src="js/jquery.js"></script>
+		<!--Swipe-->
+		<script type="text/javascript" src="js/jquery.touchSwipe.js"></script>
 		<!--Materialize-->
 		<script type="text/javascript" src="js/materialize.js"></script>
 		<!--VueJS-->
