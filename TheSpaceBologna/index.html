@@ -10,6 +10,12 @@
 		<!--App style -->
 		<link type="text/css" rel="stylesheet" href="css/style.css" />
 
+		<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+		<link rel="icon" type="image/png" href="/favicon-32x32.png" sizes="32x32">
+		<link rel="icon" type="image/png" href="/favicon-16x16.png" sizes="16x16">
+		<link rel="manifest" href="/manifest.json">
+		<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+
 		<meta charset="utf-8" />
 		<meta name="theme-color" content="#f57c00">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>		
@@ -49,17 +55,19 @@
 				</div>
 			</div>
 
-			<div v-for="n in config.days" :id.prop="generateContainerID(n)">
-				<div class="row">
-					<div v-if="programmazione[n-1].length === 0" class="col s12">
-						<h4 class="center-align">Nessun film in programmazione per il giorno selezionato.</h4>
+			<template v-else>	
+				<div v-for="n in config.days" :id.prop="generateContainerID(n)">
+					<div class="row">
+						<div v-if="programmazione[n-1].length === 0" class="col s12">
+							<h4 class="center-align">Nessun film in programmazione per il giorno selezionato.</h4>
+						</div>
+						<template v-else>
+							<movie-card v-for="movie in programmazione[n-1]" :movie="movies[movie]" :day="n-1" :is-desktop="true"></movie-card>
+							<!--<movie-card v-for="movie in programmazione[n-1]" :movie="movies[movie]" :day="n-1" :is-desktop="false"></movie-card>-->
+						</template>
 					</div>
-					<template v-else>
-						<movie-card v-for="movie in programmazione[n-1]" :movie="movies[movie]" :day="n-1" :is-desktop="true"></movie-card>
-						<movie-card v-for="movie in programmazione[n-1]" :movie="movies[movie]" :day="n-1" :is-desktop="false"></movie-card>
-					</template>
 				</div>
-			</div>
+			</template>
 
 			<div class="fixed-action-btn click-to-toggle">
 				<a class="btn-floating btn-large orange darken-2" @click="handleFAB">

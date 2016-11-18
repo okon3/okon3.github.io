@@ -92,7 +92,7 @@ function loadFilms(){
                             var film = {};
                             film.title = _film[0].seo.seoTitle;
                             film.director = _film[0].regia;
-                            film.duration = _film[0].durata;
+                            film.duration = app.minToHours(_film[0].durata);
                             film.genres = _film[0].categories;
                             film.imageURL = 'http://cdn.thespacecinema.it/portal/rest/jcr/repository/collaboration' + _film[0].path + '/illustration';
                             film.times = [];
@@ -230,6 +230,11 @@ var app = new Vue({
         handleFAB : function(){
             this.config.isFABActive = !this.config.isFABActive;
         },
+        minToHours : function(minutes){
+            var h = Math.floor(minutes/60);
+            var m = minutes - (60*h);
+            return h + ':' + m;
+        },
         sortMovies : function(){
             for(var i = 0 ; i < this.programmazione.length; i++){
                 this.programmazione[i].sort(this.config.sorts[this.config.sortIndex].function);
@@ -253,28 +258,33 @@ var app = new Vue({
 })
 
 Vue.component('movie-card', {
-  props: ['movie', 'day', 'isDesktop'],
-  template: '<div class="col s12 m6 l6" v-bind:class="{\'hide-on-med-and-down\':isDesktop, l6:isDesktop,\'hide-on-large-only\':!isDesktop, s12:!isDesktop, m6:!isDesktop}">'+ 
-            '	<div class="card hoverable" v-bind:class="{horizontal:isDesktop}">'+
-            '		<div class="card-image" v-if="!app.config.listMode">'+
-            '			<img v-bind:src="movie.imageURL">'+
-            '		</div>'+
-            '		<div class="card-stacked">'+
-            '			<div class="card-content">'+
-            '				<span class="card-title">{{movie.title}}</span>'+
-            '				<ul class="fa-ul" v-if="!app.config.listMode">'+
-            '					<li><i class="fa-li fa fa-genderless"></i> <strong>Genere</strong> : {{movie.genres.join(\', \')}} </li>'+
-            '					<li><i class="fa-li fa fa-film"></i> <strong>Regia</strong> : {{movie.director}}</li>'+
-            '					<li><i class="fa-li fa fa-play"></i> <strong>Durata</strong> : {{movie.duration}}</li>'+
-            '				</ul>'+
-            '               <p v-if="app.config.listMode"><strong>Genere</strong> : {{movie.genres.join(\', \')}} | <strong>Regia</strong> : {{movie.director}} | <strong>Durata</strong> : {{movie.duration}}</p>'+
-            '			</div>'+
-            '			<div class="card-action center-align">'+
-            '				<div class="chip blue white-text" v-for="time in movie.times[day]" @click="checkOccupancy(time,$event)">{{time.time}}</div>'+
-            '			</div>'+
-            '		</div>'+
-            '	</div>'+
-            '</div>',
+    computed : {
+        listMode : function(){
+            return app.config.listMode;
+        }
+    },
+    props: ['movie', 'day', 'isDesktop'],
+    template: '<div class="col s12 m6 l6" v-bind:class="{\'hide-on-med-and-down\':isDesktop, l6:isDesktop,\'hide-on-large-only\':!isDesktop, s12:!isDesktop, m6:!isDesktop}">'+ 
+                '	<div class="card hoverable" v-bind:class="{horizontal:isDesktop}">'+
+                '		<div class="card-image" v-if="!listMode">'+
+                '			<img v-bind:src="movie.imageURL">'+
+                '		</div>'+
+                '		<div class="card-stacked">'+
+                '			<div class="card-content">'+
+                '				<span class="card-title">{{movie.title}}</span>'+
+                '				<ul class="fa-ul" v-if="!listMode">'+
+                '					<li><i class="fa-li fa fa-genderless"></i> <strong>Genere</strong> : {{movie.genres.join(\', \')}} </li>'+
+                '					<li><i class="fa-li fa fa-film"></i> <strong>Regia</strong> : {{movie.director}}</li>'+
+                '					<li><i class="fa-li fa fa-play"></i> <strong>Durata</strong> : {{movie.duration}}</li>'+
+                '				</ul>'+
+                '               <p v-if="listMode"><strong>Genere</strong> : {{movie.genres.join(\', \')}} | <strong>Regia</strong> : {{movie.director}} | <strong>Durata</strong> : {{movie.duration}}</p>'+
+                '			</div>'+
+                '			<div class="card-action center-align">'+
+                '				<div class="chip blue white-text" v-for="time in movie.times[day]" @click="checkOccupancy(time,$event)">{{time.time}}</div>'+
+                '			</div>'+
+                '		</div>'+
+                '	</div>'+
+                '</div>',
     methods : {
         checkOccupancy : function(time,event){
             app.checkOccupancy(time,event);
