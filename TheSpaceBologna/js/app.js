@@ -10,24 +10,32 @@ weekday[6] = "Sabato";
 //Startup
 (function($){
     $(function(){
-        //$('.button-collapse').sideNav();
         setDays();
 
-        $("#app").swipe( {
-        swipeLeft:function(event, direction, distance, duration, fingerCount) {
-            var currentDay = parseInt($('.tabs a.active').attr('href').substr(-1));
-            $('ul.tabs').tabs('select_tab', 'container-'+(++currentDay));
-        },
-        swipeRight:function(event, direction, distance, duration, fingerCount) {
-            var currentDay = parseInt($('.tabs a.active').attr('href').substr(-1));
-            $('ul.tabs').tabs('select_tab', 'container-'+(--currentDay));
-        },
-        threshold: 0
-      });
+        if(isMobile()){
+            $("#app").swipe( {
+                swipeLeft:function(event, direction, distance, duration, fingerCount) {
+                    var currentDay = parseInt($('.tabs a.active').attr('href').substr(-1));
+                    if(fingerCount > 0)
+                        $('ul.tabs').tabs('select_tab', 'container-'+(++currentDay));
+                },
+                swipeRight:function(event, direction, distance, duration, fingerCount) {
+                    var currentDay = parseInt($('.tabs a.active').attr('href').substr(-1));
+                    if(fingerCount > 0)
+                        $('ul.tabs').tabs('select_tab', 'container-'+(--currentDay));
+                },
+                threshold: 100
+            });
+        }
 
         loadFilms();
     });
 })(jQuery);
+
+function isMobile() {
+  try{ document.createEvent("TouchEvent"); return true; }
+  catch(e){ return false; }
+}
 
 //Set days accordingly
 function setDays(){
