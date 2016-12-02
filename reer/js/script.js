@@ -81,18 +81,29 @@ var reerMap = {
             reerMap.layers[layer] = {};
 
             console.log("Loading layer:" + layer);
-            $.getJSON("data/"+ layer +".json")
-                .done(function(data) {
-                    console.log("Loaded layer:" + layer);
-                    reerMap.layers[layer].layer = L.canvasTiles()
-                      .params({ debug: false, padding: 5 })
-                      .drawing(reerMap.drawingOnCanvas);
-                    //reerMap.layers[layer].layer = new L.TopoJSON(data, {style : reerMap.style});
-                    tileIndex = geojsonvt(data, reerMap.options.tileOptions);
-                    reerMap.layers[layer].enabled = false;
-                    $("#" + layer).removeClass("loading");
-                    reerMap.toggleLayer(layer);
-                });
+            reerMap.layers[layer].layer = L.tileLayer.wms('http://185.122.59.236:8080/geoserver/reer/wms?',
+                {
+                    layers : 'reer',
+                    transparent: true,
+                    format: 'image/png8',
+                }
+            );
+            reerMap.layers[layer].enabled = false;
+            reerMap.toggleLayer(layer);
+
+
+            // $.getJSON("data/"+ layer +".json")
+            //     .done(function(data) {
+            //         console.log("Loaded layer:" + layer);
+            //         reerMap.layers[layer].layer = L.canvasTiles()
+            //           .params({ debug: false, padding: 5 })
+            //           .drawing(reerMap.drawingOnCanvas);
+            //         //reerMap.layers[layer].layer = new L.TopoJSON(data, {style : reerMap.style});
+            //         tileIndex = geojsonvt(data, reerMap.options.tileOptions);
+            //         reerMap.layers[layer].enabled = false;
+            //         $("#" + layer).removeClass("loading");
+            //         reerMap.toggleLayer(layer);
+            //     });
         }else{
             reerMap.toggleLayer(layer);
         }
