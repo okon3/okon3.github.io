@@ -1,2 +1,2 @@
- - [Angular](Angular/)
- - [RxJS](RxJS/)
+ - [Angular](./Angular/)
+ - [RxJS](./RxJS/)
