@@ -1,3 +1,2 @@
  - [Angular](Angular/)
-	- [Performance](Angular/performance.md)
  - [RxJS](RxJS/)
